@@ -311,7 +311,7 @@ export const SettingsPage: React.FC = () => {
 					</div>
 				)}
 			</>
-			{session.status === SessionStatus.Ready && (
+			{!isDisabled && (
 				<div className="row center buttons">
 					<button className="btn btn--yellow" onClick={handleCancel}>
 						Отменить
