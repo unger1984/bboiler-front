@@ -169,6 +169,8 @@ export const SettingsPage: React.FC = () => {
 		getSettings();
 	};
 
+	const isDisabled = session.status !== SessionStatus.Ready && session.status !== SessionStatus.Error;
+
 	return (
 		<div className="settings">
 			<div className="row center">
@@ -180,11 +182,7 @@ export const SettingsPage: React.FC = () => {
 					{settings.tempDevices.length <= 0 ? (
 						<span className="error">Подключите датчик!</span>
 					) : (
-						<select
-							value={settings.tempName}
-							disabled={session.status !== SessionStatus.Ready}
-							onChange={handleChangeDevice}
-						>
+						<select value={settings.tempName} disabled={isDisabled} onChange={handleChangeDevice}>
 							{settings.tempDevices.map(item => (
 								<option key={item}>{item}</option>
 							))}
@@ -195,23 +193,13 @@ export const SettingsPage: React.FC = () => {
 			<div className="row">
 				<div>Допустимое падение температуры (℃):</div>
 				<div>
-					<input
-						type="number"
-						value={settings.tempDiff}
-						onChange={handleTempDiff}
-						readOnly={session.status !== SessionStatus.Ready}
-					/>
+					<input type="number" value={settings.tempDiff} onChange={handleTempDiff} readOnly={isDisabled} />
 				</div>
 			</div>
 			<div className="row">
 				<div>Температура засыпи солода (℃):</div>
 				<div>
-					<input
-						type="number"
-						value={settings.tempMalt}
-						onChange={handleTempMalt}
-						readOnly={session.status !== SessionStatus.Ready}
-					/>
+					<input type="number" value={settings.tempMalt} onChange={handleTempMalt} readOnly={isDisabled} />
 				</div>
 			</div>
 			<div className="row center">
@@ -225,14 +213,14 @@ export const SettingsPage: React.FC = () => {
 								type="number"
 								value={item.temp}
 								onChange={event => handleChangePauseTemp(index, event)}
-								readOnly={session.status !== SessionStatus.Ready}
+								readOnly={isDisabled}
 							/>
 							<span>℃</span>
 							<input
 								type="number"
 								value={item.time}
 								onChange={event => handleChangePauseTime(index, event)}
-								readOnly={session.status !== SessionStatus.Ready}
+								readOnly={isDisabled}
 							/>
 							<span>мин.</span>
 							{session.status === SessionStatus.Ready && settings.pauses.length > 1 && (
@@ -257,7 +245,7 @@ export const SettingsPage: React.FC = () => {
 						type="number"
 						value={settings.tempMashOut}
 						onChange={handleTempMashOut}
-						readOnly={session.status !== SessionStatus.Ready}
+						readOnly={isDisabled}
 					/>
 				</div>
 			</div>
@@ -268,7 +256,7 @@ export const SettingsPage: React.FC = () => {
 						type="number"
 						value={settings.timeMashOut}
 						onChange={handleTimeMashOut}
-						readOnly={session.status !== SessionStatus.Ready}
+						readOnly={isDisabled}
 					/>
 				</div>
 			</div>
@@ -282,7 +270,7 @@ export const SettingsPage: React.FC = () => {
 						type="number"
 						value={settings.tempBoiling}
 						onChange={handleTemBoiling}
-						readOnly={session.status !== SessionStatus.Ready}
+						readOnly={isDisabled}
 					/>
 				</div>
 			</div>
@@ -293,7 +281,7 @@ export const SettingsPage: React.FC = () => {
 						type="number"
 						value={settings.timeBoiling}
 						onChange={handleTimeBoiling}
-						readOnly={session.status !== SessionStatus.Ready}
+						readOnly={isDisabled}
 					/>
 				</div>
 			</div>
@@ -308,7 +296,7 @@ export const SettingsPage: React.FC = () => {
 								type="number"
 								value={item.time}
 								onChange={event => handleChangeHopTime(index, event)}
-								readOnly={session.status !== SessionStatus.Ready}
+								readOnly={isDisabled}
 							/>
 							<span>мин.</span>
 							{session.status === SessionStatus.Ready && settings.hops.length > 1 && (
