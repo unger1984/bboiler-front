@@ -50,6 +50,10 @@ export const BoilingStatus: React.FC<BoilingStatusProps> = ({ session }) => {
 		}
 	};
 
+	const handleSettings = () => {
+		self.location.assign('/settings');
+	};
+
 	switch (session.status) {
 		case SessionStatus.Ready:
 			return (
@@ -166,6 +170,19 @@ export const BoilingStatus: React.FC<BoilingStatusProps> = ({ session }) => {
 					</div>
 				</div>
 			);
+		case SessionStatus.Error: {
+			return (
+				<div className="status error">
+					<h4>Ошибка!</h4>
+					<div className="status__info">{session.error}</div>
+					<div className="status__buttons">
+						<button className="btn btn--green" onClick={handleSettings}>
+							Настройки
+						</button>
+					</div>
+				</div>
+			);
+		}
 	}
 	return <div className="status"></div>;
 };

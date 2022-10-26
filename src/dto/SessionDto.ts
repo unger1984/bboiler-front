@@ -10,6 +10,7 @@ export enum SessionStatus {
 	Boiling = 'BOILING', // кипячение
 	Hop = 'HOP', // засыпь хмеля
 	Done = 'DONE', // варка завершена
+	Error = 'ERROR', // ошибка
 }
 
 export interface SessionDto {
@@ -21,4 +22,5 @@ export interface SessionDto {
 	status: SessionStatus; // текущий статус
 	pause: number; // номер текущей паузы (от 1)
 	hop: number; // номер текущей зазыпи хмеля
+	error: string;
 }

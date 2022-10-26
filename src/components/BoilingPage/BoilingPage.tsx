@@ -12,6 +12,14 @@ export const BoilingPage: React.FC = () => {
 
 	if (!session) return <Preloader />;
 
+	if (session.status === SessionStatus.Error) {
+		return (
+			<div className="boiling">
+				<BoilingStatus session={session} />
+			</div>
+		);
+	}
+
 	const getDeviceStatus = (status: boolean) => {
 		return status ? 'Включен' : 'Отключен';
 	};
@@ -36,6 +44,8 @@ export const BoilingPage: React.FC = () => {
 				return 'Температурная пауза';
 			case SessionStatus.Heat:
 				return 'Нагрев';
+			case SessionStatus.Error:
+				return 'Ошибка';
 		}
 	};
 

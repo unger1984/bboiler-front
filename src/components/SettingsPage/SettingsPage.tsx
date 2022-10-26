@@ -168,6 +168,20 @@ export const SettingsPage: React.FC = () => {
 				<h4>Основные настройки</h4>
 			</div>
 			<div className="row">
+				<div>Датчик температуры:</div>
+				<div>
+					{settings.tempDevices.length <= 0 ? (
+						<span className="error">Подключите датчик!</span>
+					) : (
+						<select value={settings.tempName} disabled={session.status !== SessionStatus.Ready}>
+							{settings.tempDevices.map(item => (
+								<option key={item}>{item}</option>
+							))}
+						</select>
+					)}
+				</div>
+			</div>
+			<div className="row">
 				<div>Допустимое падение температуры (℃):</div>
 				<div>
 					<input

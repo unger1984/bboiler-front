@@ -8,6 +8,8 @@ export interface HopDto {
 }
 
 export interface SettingsDto {
+	tempName: string; // датчик температуры
+	tempDevices: string[]; // список датчиков
 	tempMalt: number; // температура засыпи
 	tempMashOut: number; // температура мэшаута
 	timeMashOut: number; // время мэшаута
