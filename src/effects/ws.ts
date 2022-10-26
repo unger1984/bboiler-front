@@ -105,3 +105,19 @@ export const doneDone = createEffect<void, void>(() => {
 export const skip = createEffect<void, void>(() => {
 	$wsSocket.getState()?.send(JSON.stringify(new WsMessage(WsMessageType.Skip, null)));
 });
+
+export const tenOn = createEffect<void, void>(() => {
+	$wsSocket.getState()?.send(JSON.stringify(new WsMessage(WsMessageType.TenOn, null)));
+});
+
+export const tenOff = createEffect<void, void>(() => {
+	$wsSocket.getState()?.send(JSON.stringify(new WsMessage(WsMessageType.TenOff, null)));
+});
+
+export const pumpOn = createEffect<void, void>(() => {
+	$wsSocket.getState()?.send(JSON.stringify(new WsMessage(WsMessageType.PumpOn, null)));
+});
+
+export const pumpOff = createEffect<void, void>(() => {
+	$wsSocket.getState()?.send(JSON.stringify(new WsMessage(WsMessageType.PumpOff, null)));
+});

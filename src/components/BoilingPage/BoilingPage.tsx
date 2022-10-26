@@ -7,6 +7,7 @@ import { Preloader } from 'common/Preloader/Preloader';
 import { SessionStatus } from 'dto/SessionDto';
 import { BoilingStatus } from 'components/BoilingPage/BoilingStatus';
 import { abc2 } from 'utils/utils';
+import { pumpOff, pumpOn, tenOff, tenOn } from '../../effects/ws';
 
 export const BoilingPage: React.FC = () => {
 	const session = useStore($session);
@@ -50,16 +51,32 @@ export const BoilingPage: React.FC = () => {
 		}
 	};
 
+	const handleSwicthPump = () => {
+		if (session.pump) pumpOff();
+		else pumpOn();
+	};
+
+	const handleSwicthTen = () => {
+		if (session.ten) tenOff();
+		else tenOn();
+	};
+
 	return (
 		<div className="boiling">
 			<div className="row">
 				<div>Температура:</div> <div>{abc2(session.temp, 1)}℃</div>
 			</div>
 			<div className="row">
-				<div>ТЭН:</div> <div>{getDeviceStatus(session.ten)}</div>
+				<div>ТЭН:</div>{' '}
+				<div>
+					<a onClick={handleSwicthTen}>{getDeviceStatus(session.ten)}</a>
+				</div>
 			</div>
 			<div className="row">
-				<div>Насос:</div> <div>{getDeviceStatus(session.pump)}</div>
+				<div>Насос:</div>{' '}
+				<div>
+					<a onClick={handleSwicthPump}>{getDeviceStatus(session.pump)}</a>
+				</div>
 			</div>
 			<div className="row">
 				<div>Статус:</div> <div>{getStatus(session.status)}</div>
