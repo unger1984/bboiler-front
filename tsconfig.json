@@ -1,0 +1,71 @@
+{
+  "compilerOptions": {
+    "skipLibCheck": true,
+    "strictNullChecks": true,
+    "target": "es2017",
+    "module": "commonjs",
+    "lib": [
+      "dom",
+      "es6"
+    ],
+    "jsx": "react",
+    "sourceMap": true,
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "noEmitOnError": true,
+    "strict": true,
+    "strictPropertyInitialization": false,
+    "moduleResolution": "node",
+    "baseUrl": ".",
+    "typeRoots": [
+      "./src/@types",
+      "node_modules/@types"
+    ],
+    "esModuleInterop": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "forceConsistentCasingInFileNames": true,
+    "allowUnusedLabels": false,
+    "noImplicitReturns": true,
+    "paths": {
+      "assets/*":[
+        "src/assets/*"
+      ],
+      "components/*": [
+        "src/components/*"
+      ],
+      "common/*": [
+        "src/components/common/*"
+      ],
+      "shared/*": [
+        "src/components/shared/*"
+      ],
+      "ducks/*": [
+        "src/ducks/*"
+      ],
+      "api/*": [
+        "src/api/*"
+      ],
+      "utils/*": [
+        "src/utils/*"
+      ],
+      "models/*": [
+        "src/models/*"
+      ],
+      "dto/*": [
+        "src/dto/*"
+      ],
+      "hooks/*": [
+        "src/hooks/*"
+      ]
+    }
+  },
+  "include": [
+    "./src/**/*"
+  ],
+  "exclude": [
+    "./node_modules/**/*",
+    "node_modules",
+    "./webpack/**/*"
+  ]
+}

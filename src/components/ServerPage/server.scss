@@ -1,0 +1,40 @@
+.server{
+  margin-top: 100px;
+  .row{
+    padding-top: 5px;
+    padding-bottom: 5px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+
+    h4{
+      margin-top: 10px;
+    }
+
+    input{
+      width: 200px;
+    }
+
+    &.center{
+      justify-content: center;
+      border: none;
+
+      span{
+        margin-left: 5px;
+        margin-right: 10px;
+      }
+    }
+
+    &.buttons{
+      margin-top: 10px;
+      align-items: center;
+      justify-content: center;
+
+      button{
+        margin-left: 10px;
+        margin-right: 10px;
+      }
+    }
+  }
+}

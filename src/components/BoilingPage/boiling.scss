@@ -1,0 +1,35 @@
+.boiling{
+  padding: 10px;
+
+  .row{
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .status{
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid gainsboro;
+
+    h4{
+      margin-bottom: 10px;
+    }
+
+    &__buttons{
+      margin-top: 20px;
+      display: flex;
+      flex-direction: row;
+
+      button{
+        margin-left: 10px;
+        margin-right: 10px;
+      }
+    }
+  }
+}

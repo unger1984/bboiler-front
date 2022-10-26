@@ -1,0 +1,40 @@
+{
+  "extends": [
+    "stylelint-config-recommended",
+    "./node_modules/prettier-stylelint/config.js"
+  ],
+  "syntax": "scss",
+  "plugins": [
+    "stylelint-order",
+    "stylelint-scss"
+  ],
+  "rules": {
+    "media-feature-name-no-unknown": null,
+    "no-descending-specificity": null,
+    "at-rule-no-unknown": null,
+    "scss/at-rule-no-unknown": true,
+    "at-rule-empty-line-before": [
+      "always",
+      {
+        "except": ["blockless-after-same-name-blockless"],
+        "ignore": ["after-comment", "first-nested"],
+        "severity": "warning"
+      }
+    ],
+    "custom-property-empty-line-before": [
+      "always",
+      {
+        "except": ["after-custom-property"],
+        "ignore": ["after-comment", "first-nested", "inside-single-line-block"],
+        "severity": "warning"
+      }
+    ],
+    "rule-empty-line-before": [
+      "always",
+      {
+        "ignore": ["after-comment", "first-nested"],
+        "severity": "warning"
+      }
+    ]
+  }
+}
