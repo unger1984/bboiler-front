@@ -13,6 +13,7 @@ import {
 	setTemMashOut,
 	setTempDiff,
 	setTempMalt,
+	setTempName,
 	setTimeBoiling,
 	setTimeMashOut,
 } from '../../effects/settings';
@@ -35,6 +36,12 @@ export const SettingsPage: React.FC = () => {
 		getSettings();
 		return <Preloader />;
 	}
+
+	const handleChangeDevice = (event: React.ChangeEvent<HTMLSelectElement>) => {
+		if (event.target.value) {
+			setTempName(event.target.value);
+		}
+	};
 
 	const handleTempMalt = (event: React.ChangeEvent<HTMLInputElement>) => {
 		if (event.target.value) {
@@ -173,7 +180,11 @@ export const SettingsPage: React.FC = () => {
 					{settings.tempDevices.length <= 0 ? (
 						<span className="error">Подключите датчик!</span>
 					) : (
-						<select value={settings.tempName} disabled={session.status !== SessionStatus.Ready}>
+						<select
+							value={settings.tempName}
+							disabled={session.status !== SessionStatus.Ready}
+							onChange={handleChangeDevice}
+						>
 							{settings.tempDevices.map(item => (
 								<option key={item}>{item}</option>
 							))}

@@ -16,6 +16,7 @@ export const delHop = createEvent<number>('del hop');
 export const setPauseTemp = createEvent<{ temp: number; index: number }>('set pause temp');
 export const setPauseTime = createEvent<{ time: number; index: number }>('set pause time');
 export const setHopTime = createEvent<{ time: number; index: number }>('set hop time');
+export const setTempName = createEvent<string>('set temp name');
 
 export const $settings = createStore<SettingsDto | null>(null)
 	.on(updateSettings, (__, settings) => settings)
@@ -66,4 +67,5 @@ export const $settings = createStore<SettingsDto | null>(null)
 			return { ...old, hops };
 		}
 		return old;
-	});
+	})
+	.on(setTempName, (old, tempName) => (old ? { ...old, tempName } : old));
