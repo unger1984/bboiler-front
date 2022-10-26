@@ -54,7 +54,7 @@ export const $settings = createStore<SettingsDto | null>(null)
 	.on(setPauseTime, (old, { time, index }) => {
 		if (old) {
 			const pauses = [...old.pauses];
-			pauses[index].temp = time;
+			pauses[index].time = time;
 			return { ...old, pauses };
 		}
 		return old;
