@@ -77,7 +77,7 @@ export const BoilingPage: React.FC = () => {
 			<div className="row">
 				<div>Температура:</div>{' '}
 				<div>
-					{settings?.tempName === 'Test' && <span className="red">Тестовый</span>} {abc2(session.temp, 1)}℃
+					{abc2(session.temp, 1)}℃ {settings?.tempName === 'Test' && <span className="red">Тестовый</span>}
 				</div>
 			</div>
 			<div className="row">
