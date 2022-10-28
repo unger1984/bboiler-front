@@ -12,6 +12,28 @@
       cursor: pointer;
       text-decoration: underline;
     }
+
+    label{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: row;
+      cursor: pointer;
+
+      input{
+        margin-left: 5px;
+      }
+    }
+
+    span{
+      &.red{
+        color: #ff5252;
+      }
+    }
+
+    &.buttons{
+      margin-top: 20px;
+    }
   }
 
   .status{

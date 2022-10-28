@@ -95,6 +95,25 @@ input[type='search'] {
 		}
 	}
 
+  &--red {
+    padding: 12px 21px;
+    background-color: #ff5252;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(195, 115, 223, 0.2);
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 22px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: #4c2967;
+    text-align: center;
+
+    &:hover {
+      background-color: #00a1d5;
+      color: #fff;
+    }
+  }
+
   &--green {
     padding: 12px 21px;
     background-color: lawngreen;

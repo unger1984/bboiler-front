@@ -1,6 +1,6 @@
 import { createEvent, createStore } from 'effector';
-import { SessionDto } from 'dto/SessionDto';
+import { Session } from 'dto/Session';
 
-export const updateSession = createEvent<SessionDto>('update session');
+export const updateSession = createEvent<Session>('update session');
 
-export const $session = createStore<SessionDto | null>(null).on(updateSession, (__, session) => session);
+export const $session = createStore<Session | null>(null).on(updateSession, (__, session) => session);

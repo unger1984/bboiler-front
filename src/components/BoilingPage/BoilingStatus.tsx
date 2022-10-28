@@ -1,5 +1,5 @@
 import React from 'react';
-import { SessionDto, SessionStatus } from 'dto/SessionDto';
+import { Session, SessionStatus } from 'dto/Session';
 import { useStore } from 'effector-react';
 import { $settings } from '../../effects/settings';
 import { doneDone, doneFilter, doneHop, doneMalt, doneWater, getSettings, skip } from '../../effects/ws';
@@ -8,7 +8,7 @@ import { toHHMMSS } from 'utils/utils';
 import moment from 'moment';
 
 export interface BoilingStatusProps {
-	session: SessionDto;
+	session: Session;
 }
 
 export const BoilingStatus: React.FC<BoilingStatusProps> = ({ session }) => {
@@ -50,10 +50,6 @@ export const BoilingStatus: React.FC<BoilingStatusProps> = ({ session }) => {
 		}
 	};
 
-	const handleSettings = () => {
-		self.location.assign('/settings');
-	};
-
 	switch (session.status) {
 		case SessionStatus.Ready:
 			return (
@@ -69,7 +65,10 @@ export const BoilingStatus: React.FC<BoilingStatusProps> = ({ session }) => {
 		case SessionStatus.Heat:
 			return (
 				<div className="status heat">
-					<h4>Нагрев</h4>
+					<h4>Нагрев до {session.tempMax}℃</h4>
+					<div className="status__info">
+						{toHHMMSS(moment(session.currentTime).diff(moment(session.lastTime), 'seconds'))}
+					</div>
 				</div>
 			);
 		case SessionStatus.Malt:
@@ -77,7 +76,7 @@ export const BoilingStatus: React.FC<BoilingStatusProps> = ({ session }) => {
 				<div className="status malt">
 					<h4>Засыпте солод</h4>
 					<div className="status__info">
-						{toHHMMSS(moment(session.current).diff(moment(session.time), 'seconds'))}
+						{toHHMMSS(moment(session.currentTime).diff(moment(session.lastTime), 'seconds'))}
 					</div>
 					<div className="status__buttons">
 						<button className="btn btn--green" onClick={handleDoneMalt}>
@@ -94,7 +93,7 @@ export const BoilingStatus: React.FC<BoilingStatusProps> = ({ session }) => {
 						{settings.pauses[session.pause - 1].time}мин
 					</h4>
 					<div className="status__info">
-						{toHHMMSS(moment(session.current).diff(moment(session.time), 'seconds'))}
+						{toHHMMSS(moment(session.currentTime).diff(moment(session.lastTime), 'seconds'))}
 					</div>
 					<div className="status__buttons">
 						<button className="btn btn--yellow" onClick={handleSkip}>
@@ -110,7 +109,7 @@ export const BoilingStatus: React.FC<BoilingStatusProps> = ({ session }) => {
 						МэшАут {settings.tempMashOut}℃ {settings.timeMashOut}мин
 					</h4>
 					<div className="status__info">
-						{toHHMMSS(moment(session.current).diff(moment(session.time), 'seconds'))}
+						{toHHMMSS(moment(session.currentTime).diff(moment(session.lastTime), 'seconds'))}
 					</div>
 					<div className="status__buttons">
 						<button className="btn btn--yellow" onClick={handleSkip}>
@@ -124,7 +123,7 @@ export const BoilingStatus: React.FC<BoilingStatusProps> = ({ session }) => {
 				<div className="status filter">
 					<h4>Промойте солод и залейте на кипячение</h4>
 					<div className="status__info">
-						{toHHMMSS(moment(session.current).diff(moment(session.time), 'seconds'))}
+						{toHHMMSS(moment(session.currentTime).diff(moment(session.lastTime), 'seconds'))}
 					</div>
 					<div className="status__buttons">
 						<button className="btn btn--green" onClick={handleDoneFilter}>
@@ -138,7 +137,7 @@ export const BoilingStatus: React.FC<BoilingStatusProps> = ({ session }) => {
 				<div className="status boiling">
 					<h4>Кипячение {settings.timeBoiling}мин</h4>
 					<div className="status__info">
-						{toHHMMSS(moment(session.current).diff(moment(session.time), 'seconds'))}
+						{toHHMMSS(moment(session.currentTime).diff(moment(session.lastTime), 'seconds'))}
 					</div>
 				</div>
 			);
@@ -147,12 +146,9 @@ export const BoilingStatus: React.FC<BoilingStatusProps> = ({ session }) => {
 				<div className="status hop">
 					<h4>Засыпте {session.hop + 1}ю порцию хмеля</h4>
 					<div className="status__info">
-						{toHHMMSS(moment(session.current).diff(moment(session.time), 'seconds'))}
+						{toHHMMSS(moment(session.currentTime).diff(moment(session.lastTime), 'seconds'))}
 					</div>
 					<div className="status__buttons">
-						<button className="btn btn--yellow" onClick={handleSkip}>
-							ПРОПУСТИТЬ
-						</button>
 						<button className="btn btn--green" onClick={handleDoneHop}>
 							ГОТОВО
 						</button>
@@ -170,19 +166,6 @@ export const BoilingStatus: React.FC<BoilingStatusProps> = ({ session }) => {
 					</div>
 				</div>
 			);
-		case SessionStatus.Error: {
-			return (
-				<div className="status error">
-					<h4>Ошибка!</h4>
-					<div className="status__info">{session.error}</div>
-					<div className="status__buttons">
-						<button className="btn btn--green" onClick={handleSettings}>
-							Настройки
-						</button>
-					</div>
-				</div>
-			);
-		}
 	}
 	return <div className="status"></div>;
 };

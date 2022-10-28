@@ -9,20 +9,22 @@ import {
 	setHopTime,
 	setPauseTemp,
 	setPauseTime,
+	setPumpPin,
 	setTemBoiling,
 	setTemMashOut,
 	setTempDiff,
 	setTempMalt,
 	setTempName,
+	setTenPin,
 	setTimeBoiling,
 	setTimeMashOut,
 } from '../../effects/settings';
 import { Preloader } from 'common/Preloader/Preloader';
-import { getSettings, saveSettings } from '../../effects/ws';
+import { getSettings, refreshDevices, saveSettings } from '../../effects/ws';
 
 import './settings.scss';
 import { $session } from '../../effects/session';
-import { SessionStatus } from 'dto/SessionDto';
+import { SessionStatus } from 'dto/Session';
 
 export const SettingsPage: React.FC = () => {
 	const settings = useStore($settings);
@@ -36,6 +38,24 @@ export const SettingsPage: React.FC = () => {
 		getSettings();
 		return <Preloader />;
 	}
+
+	const handleTenPin = (event: React.ChangeEvent<HTMLInputElement>) => {
+		if (event.target.value) {
+			const num = parseInt(event.target.value.trim().replace(',', '.'));
+			if (!isNaN(num)) {
+				setTenPin(num);
+			}
+		}
+	};
+
+	const handlePumpPin = (event: React.ChangeEvent<HTMLInputElement>) => {
+		if (event.target.value) {
+			const num = parseInt(event.target.value.trim().replace(',', '.'));
+			if (!isNaN(num)) {
+				setPumpPin(num);
+			}
+		}
+	};
 
 	const handleChangeDevice = (event: React.ChangeEvent<HTMLSelectElement>) => {
 		if (event.target.value) {
@@ -169,7 +189,11 @@ export const SettingsPage: React.FC = () => {
 		getSettings();
 	};
 
-	const isDisabled = session.status !== SessionStatus.Ready && session.status !== SessionStatus.Error;
+	const handleRefreshDats = () => {
+		refreshDevices();
+	};
+
+	const isDisabled = session.status !== SessionStatus.Ready;
 
 	return (
 		<div className="settings">
@@ -177,17 +201,36 @@ export const SettingsPage: React.FC = () => {
 				<h4>Основные настройки</h4>
 			</div>
 			<div className="row">
+				<div>ТЭН GPIO PIN:</div>
+				<div>
+					<input type="number" value={settings.tenPin} onChange={handleTenPin} readOnly={isDisabled} />
+				</div>
+			</div>
+			<div className="row">
+				<div>Насос GPIO PIN:</div>
+				<div>
+					<input type="number" value={settings.pumpPin} onChange={handlePumpPin} readOnly={isDisabled} />
+				</div>
+			</div>
+			<div className="row">
+				<div>Допустимое падение температуры (℃):</div>
+				<div>
+					<input type="number" value={settings.tempDiff} onChange={handleTempDiff} readOnly={isDisabled} />
+				</div>
+			</div>
+			<div className="row">
 				<div>Датчик температуры:</div>
 				<div>
-					{settings.tempDevices.length <= 0 ? (
+					{settings.devices.length <= 0 ? (
 						<span className="error">Подключите датчик!</span>
 					) : (
 						<select value={settings.tempName} disabled={isDisabled} onChange={handleChangeDevice}>
-							{settings.tempDevices.map(item => (
+							{settings.devices.map(item => (
 								<option key={item}>{item}</option>
 							))}
 						</select>
 					)}
+					<button onClick={handleRefreshDats}>o</button>
 				</div>
 			</div>
 			<div className="row">

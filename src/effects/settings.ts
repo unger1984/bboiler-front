@@ -1,7 +1,7 @@
 import { createEvent, createStore } from 'effector';
-import { SettingsDto } from 'dto/SettingsDto';
+import { Settings } from 'dto/Settings';
 
-export const updateSettings = createEvent<SettingsDto>('update settings');
+export const updateSettings = createEvent<Settings>('update settings');
 
 export const setTempDiff = createEvent<number>('set tempDiff');
 export const setTempMalt = createEvent<number>('set tempMalt');
@@ -17,8 +17,10 @@ export const setPauseTemp = createEvent<{ temp: number; index: number }>('set pa
 export const setPauseTime = createEvent<{ time: number; index: number }>('set pause time');
 export const setHopTime = createEvent<{ time: number; index: number }>('set hop time');
 export const setTempName = createEvent<string>('set temp name');
+export const setTenPin = createEvent<number>('set ten pin');
+export const setPumpPin = createEvent<number>('set pump pin');
 
-export const $settings = createStore<SettingsDto | null>(null)
+export const $settings = createStore<Settings | null>(null)
 	.on(updateSettings, (__, settings) => settings)
 	.on(setTempMalt, (old, tempMalt) => (old ? { ...old, tempMalt } : old))
 	.on(setTempDiff, (old, tempDiff) => (old ? { ...old, tempDiff } : old))
@@ -68,4 +70,6 @@ export const $settings = createStore<SettingsDto | null>(null)
 		}
 		return old;
 	})
-	.on(setTempName, (old, tempName) => (old ? { ...old, tempName } : old));
+	.on(setTempName, (old, tempName) => (old ? { ...old, tempName } : old))
+	.on(setTenPin, (old, tenPin) => (old ? { ...old, tenPin } : old))
+	.on(setPumpPin, (old, pumpPin) => (old ? { ...old, pumpPin } : old));

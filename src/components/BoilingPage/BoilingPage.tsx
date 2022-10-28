@@ -4,23 +4,18 @@ import './boiling.scss';
 import { useStore } from 'effector-react';
 import { $session } from '../../effects/session';
 import { Preloader } from 'common/Preloader/Preloader';
-import { SessionStatus } from 'dto/SessionDto';
+import { SessionStatus } from 'dto/Session';
 import { BoilingStatus } from 'components/BoilingPage/BoilingStatus';
-import { abc2 } from 'utils/utils';
-import { pumpOff, pumpOn, tenOff, tenOn } from '../../effects/ws';
+import { abc2, toHHMMSS } from 'utils/utils';
+import { cancel, manualPump, manualTen, pumpOff, pumpOn, tenOff, tenOn } from '../../effects/ws';
+import { $settings } from '../../effects/settings';
+import moment from 'moment';
 
 export const BoilingPage: React.FC = () => {
 	const session = useStore($session);
+	const settings = useStore($settings);
 
 	if (!session) return <Preloader />;
-
-	if (session.status === SessionStatus.Error) {
-		return (
-			<div className="boiling">
-				<BoilingStatus session={session} />
-			</div>
-		);
-	}
 
 	const getDeviceStatus = (status: boolean) => {
 		return status ? 'Включен' : 'Отключен';
@@ -46,42 +41,92 @@ export const BoilingPage: React.FC = () => {
 				return 'Температурная пауза';
 			case SessionStatus.Heat:
 				return 'Нагрев';
-			case SessionStatus.Error:
-				return 'Ошибка';
 		}
 	};
 
 	const handleSwicthPump = () => {
-		if (session.pump) pumpOff();
-		else pumpOn();
+		if (session.manualPump) {
+			if (session.pump) pumpOff();
+			else pumpOn();
+		}
 	};
 
 	const handleSwicthTen = () => {
-		if (session.ten) tenOff();
-		else tenOn();
+		if (session.manualTen) {
+			if (session.ten) tenOff();
+			else tenOn();
+		}
+	};
+
+	const handleManualTen = () => {
+		manualTen();
+	};
+
+	const handleManualPump = () => {
+		manualPump();
+	};
+
+	const handleCancel = () => {
+		if (confirm('Отменить варку?')) {
+			cancel();
+		}
 	};
 
 	return (
 		<div className="boiling">
 			<div className="row">
-				<div>Температура:</div> <div>{abc2(session.temp, 1)}℃</div>
+				<div>Температура:</div>{' '}
+				<div>
+					{settings?.tempName === 'Test' && <span className="red">Тестовый</span>} {abc2(session.temp, 1)}℃
+				</div>
 			</div>
 			<div className="row">
 				<div>ТЭН:</div>{' '}
+				<label onClick={handleManualTen}>
+					Ручной режим
+					<input type="checkbox" checked={session.manualTen} />
+				</label>
 				<div>
-					<a onClick={handleSwicthTen}>{getDeviceStatus(session.ten)}</a>
+					{session.manualTen ? (
+						<a onClick={handleSwicthTen}>{getDeviceStatus(session.ten)}</a>
+					) : (
+						<>{getDeviceStatus(session.ten)}</>
+					)}
 				</div>
 			</div>
 			<div className="row">
 				<div>Насос:</div>{' '}
+				<label onClick={handleManualPump}>
+					Ручной режим
+					<input type="checkbox" checked={session.manualPump} />
+				</label>
 				<div>
-					<a onClick={handleSwicthPump}>{getDeviceStatus(session.pump)}</a>
+					{session.manualPump ? (
+						<a onClick={handleSwicthPump}>{getDeviceStatus(session.pump)}</a>
+					) : (
+						<>{getDeviceStatus(session.pump)}</>
+					)}
 				</div>
 			</div>
 			<div className="row">
 				<div>Статус:</div> <div>{getStatus(session.status)}</div>
 			</div>
+			<div className="row">
+				<div>Время варки:</div>{' '}
+				<div>
+					{session.startTime
+						? toHHMMSS(moment(session.currentTime).diff(moment(session.startTime), 'seconds'))
+						: 'Не начата'}
+				</div>
+			</div>
 			<BoilingStatus session={session} />
+			{session.status !== SessionStatus.Done && session.status !== SessionStatus.Ready && (
+				<div className="row buttons">
+					<button className="btn btn--red" onClick={handleCancel}>
+						Отменить варку
+					</button>
+				</div>
+			)}
 		</div>
 	);
 };
