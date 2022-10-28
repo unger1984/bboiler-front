@@ -114,7 +114,7 @@ export const BoilingPage: React.FC = () => {
 			<div className="row">
 				<div>Время варки:</div>{' '}
 				<div>
-					{session.startTime
+					{session.startTime && session.status !== SessionStatus.Ready
 						? toHHMMSS(moment(session.currentTime).diff(moment(session.startTime), 'seconds'))
 						: 'Не начата'}
 				</div>
